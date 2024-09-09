@@ -1,13 +1,13 @@
 Bootstrap: docker
-From: ubuntu:20.04
+From: ubuntu:22.04
 
 %post
     apt-get update -y
-    apt-get -y install cowsay lolcat
+    apt-get -y install cowsay ponysay
 
 %environment
     export LC_ALL=C
     export PATH=/usr/games:$PATH
 
 %runscript
-    date | cowsay | lolcat
+    date | cowsay | ponysay
