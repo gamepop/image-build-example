@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ubuntu:20.04
+From: ubuntu:22.04
 
 %post
     apt-get update -y
@@ -10,4 +10,4 @@ From: ubuntu:20.04
     export PATH=/usr/games:$PATH
 
 %runscript
-    date | cowsay | lolcat -a
+    date | cowsay | lolcat
