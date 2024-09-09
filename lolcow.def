@@ -10,4 +10,4 @@ From: ubuntu:20.04
     export PATH=/usr/games:$PATH
 
 %runscript
-    date | cowsay | lolcat
+    date | cowsay | lolcat -a
