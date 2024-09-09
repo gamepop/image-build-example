@@ -1,3 +1,6 @@
+# In this directory, run the following command to build this builder.
+# $ gcloud builds submit . --config=cloudbuild.yaml
+
 # cloudbuild.yaml
 steps:
 - name: 'gcr.io/cloud-builders/docker'
@@ -6,24 +9,19 @@ steps:
   - '-t'
   - 'gcr.io/$PROJECT_ID/apptainer:latest'
   - '.'
-  id: 'build-apptainer' # Add an ID to this step
 
-# Build and push the lolcow.sif image (only if 'build-apptainer' step runs)
-- name: 'gcr.io/$PROJECT_ID/apptainer:latest' 
+# Build and push the lolcow.sif image
+- name: 'gcr.io/$PROJECT_ID/apptainer:latest' # Use the newly built apptainer image
   args:
   - 'build'
   - '--fakeroot'
   - 'lolcow.sif'
   - 'lolcow.def'
-  waitFor: ['-', 'build-apptainer'] # Wait for success or execution of 'build-apptainer'
-
 - name: 'gcr.io/$PROJECT_ID/apptainer:latest'
   args:
   - 'push'
   - 'lolcow.sif'
   - 'oras://${_LOCATION}/$PROJECT_ID/${_REPOSITORY}/lolcow:${_VERSION}'
-  waitFor: ['-', 'build-apptainer'] # Wait for success or execution of 'build-apptainer'
-
 substitutions:
   _LOCATION: us-docker.pkg.dev
   _REPOSITORY: sifs
@@ -33,4 +31,3 @@ substitutions:
 images:
 - 'gcr.io/$PROJECT_ID/apptainer:latest'
 tags: ['cloud-builders-community']
-
